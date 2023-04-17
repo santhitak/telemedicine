@@ -1,6 +1,54 @@
-const SignIn = () => {
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import { SignUpInformation } from "./sign-up";
+import { useStore } from "@/lib/store";
+
+interface UserSignIn {
+  email: string;
+  password: string;
+}
+
+interface Props {
+  user: SignUpInformation;
+  setUser: (user: SignUpInformation) => void;
+}
+
+const useUserStore = () => {
+  return useStore((store) => ({
+    user: store.user,
+    setUser: store.setUser,
+  }));
+};
+
+const SignIn = (props: Props) => {
+  const { user, setUser } = useUserStore();
+  const router = useRouter();
+  const [userSignIn, setUserSignIn] = useState<UserSignIn>({
+    email: "",
+    password: "",
+  });
+
+  const checkUserSignUp = () => {
+    const getInfo = localStorage.getItem("tele-signup");
+    const response: SignUpInformation = JSON.parse(getInfo || "{}");
+
+    if (
+      userSignIn.email === response.email &&
+      userSignIn.password === response.password
+    ) {
+      setUser(response);
+      toast.success("Successfully Login");
+      router.push(`/user/${response.uuid}`);
+    } else {
+      toast.error("Wrong email or password");
+    }
+  };
+
   return (
     <div className="grid grid-cols-12 justify-center pt-40">
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="col-start-5 col-end-9 divide-y-2">
         <div className="grid grid-cols-1 gap-2">
           <h4 className="font-semibold text-4xl">Sign In</h4>
@@ -8,7 +56,7 @@ const SignIn = () => {
             Make an appointment with your doctors with few clicks
           </p>
         </div>
-        <form className="mt-8 pt-2 space-y-6" action="#" method="POST">
+        <div className="mt-8 pt-2 space-y-6">
           <input type="hidden" name="remember" defaultValue="true" />
           <div className="-space-y-px rounded-md shadow-sm">
             <div>
@@ -21,8 +69,9 @@ const SignIn = () => {
                 type="email"
                 autoComplete="email"
                 required
-                className="relative block w-full rounded-t-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring sm:text-sm sm:leading-6 px-2"
+                className="relative block w-full rounded-t-md border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring sm:text-sm sm:leading-6 px-2"
                 placeholder="Email address"
+                onChange={(e) => (userSignIn.email = e.target.value)}
               />
             </div>
             <div>
@@ -35,32 +84,36 @@ const SignIn = () => {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="relative block w-full rounded-b-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring sm:text-sm sm:leading-6 px-2"
+                className="relative block w-full rounded-b-md border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring sm:text-sm sm:leading-6 px-2"
                 placeholder="Password"
+                onChange={(e) => (userSignIn.password = e.target.value)}
               />
             </div>
           </div>
 
           <div className="flex items-center justify-between">
             <div className="text-sm">
-              <a
-                href="#"
-                className="font-medium text-emerald-600 hover:text-emerald-500"
-              >
-                Forgot your password?
-              </a>
+              <p className="font-medium">
+                Don&apos;t have an account?{" "}
+                <Link
+                  className=" text-emerald-600 hover:text-emerald-500"
+                  href="/sign-up"
+                >
+                  Sign Up
+                </Link>
+              </p>
             </div>
           </div>
 
           <div>
             <button
-              type="submit"
+              onClick={checkUserSignUp}
               className="group relative flex w-full justify-center rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
             >
               Sign in
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

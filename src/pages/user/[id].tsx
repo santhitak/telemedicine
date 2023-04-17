@@ -1,3 +1,5 @@
+import { useStore } from "@/lib/store";
+
 interface Profile {
   name: string;
   age: number;
@@ -12,7 +14,15 @@ interface Appointment {
   time: string;
 }
 
+const useUserStore = () => {
+  return useStore((store) => ({
+    user: store.user,
+    setUser: store.setUser,
+  }));
+};
+
 const UserProfile = () => {
+  const { user, setUser } = useUserStore();
   const UserProfile: Profile = {
     name: "Maeve Freddrick",
     age: 34,
@@ -31,21 +41,22 @@ const UserProfile = () => {
       },
     ],
   };
+
   return (
     <div className="pt-20 flex justify-center">
       <div className="bg-gray-100 rounded-md w-5/12 min-h-96">
         <div className="p-10 flex gap-4 flex-col">
           <p className="font-semibold">Patient&apos;s Information</p>
           <div>
-            <p className="font-semibold">{UserProfile.name}</p>
+            <p className="font-semibold">{user?.fullname}</p>
             <div className="flex gap-2 font-semibold">
               <p>
-                Age <span className="font-normal">{UserProfile.age}</span>
+                Age <span className="font-normal">{user?.age}</span>
               </p>
               <p>
                 Gender{" "}
                 <span className="font-normal">
-                  {UserProfile.gender === "F" ? "Female" : "Male"}
+                  {user?.gender === "F" ? "Female" : "Male"}
                 </span>
               </p>
             </div>
