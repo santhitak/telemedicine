@@ -35,7 +35,7 @@ const Nav = (props: Props) => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-between px-28 py-20">
+    <div className="flex min-h-screen flex-col items-center justify-between px-28 py-12">
       <div className="w-full h-full flex flex-col">
         <div className="flex justify-between items-center">
           <Link href="/">
