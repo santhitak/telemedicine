@@ -4,8 +4,8 @@ import { MdOutlineVideoCall } from "react-icons/md";
 import { GiHealthNormal } from "react-icons/gi";
 import { FiArrowRightCircle } from "react-icons/fi";
 import { RadioGroup } from "@headlessui/react";
-import { useState, Fragment } from "react";
-
+import { useState, Fragment, useEffect } from "react";
+import { useStore } from "@/lib/store";
 interface RadioChoice {
   title: string;
   icon: React.ReactElement;
@@ -37,8 +37,15 @@ interface AppointmentInfo {
   doctor: string;
   symptom: string;
 }
+const useUserStore = () => {
+  return useStore((store) => ({
+    user: store.user,
+    setUser: store.setUser,
+  }));
+};
 
 const Appointment = () => {
+  const [con, setCon] = useState(false);
   const [selected, setSelected] = useState<RadioChoice>(appointmentChoice[0]);
   const [appointmentInfo, setAppointmentInfo] = useState<AppointmentInfo>({
     purpose: "",
@@ -47,12 +54,30 @@ const Appointment = () => {
     doctor: "",
     symptom: "",
   });
+  const { user, setUser } = useUserStore();
+  useEffect(() => checkUserSignIn(), []);
+  const data = JSON.parse(localStorage.getItem("tele-signup") || "[]");
+  const checkUserSignIn = () => {
+    const getInfo = JSON.parse(localStorage.getItem("user") || "null");
+    // const response: SignUpInformation = JSON.parse(getInfo || "null");
+    setUser(getInfo);
+  };
 
   const handleSubmit = () => {
     appointmentInfo.purpose = selected.title;
+
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].email === user?.email) {
+        data[i].appointment.push(appointmentInfo);
+        localStorage.setItem("tele-signup", JSON.stringify(data));
+        user?.appointment.push(appointmentInfo);
+        localStorage.setItem("user", JSON.stringify(user));
+      }
+    }
+
+    console.log(con);
     console.log(appointmentInfo);
   };
-
   return (
     <div className="flex flex-col justify-center items-center pt-10">
       <p className="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-500">

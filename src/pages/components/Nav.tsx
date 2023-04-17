@@ -22,16 +22,17 @@ const Nav = (props: Props) => {
   const { user, setUser } = useUserStore();
 
   const handleSignout = () => {
+    localStorage.removeItem("user");
     setUser(null);
     router.push("/");
   };
 
-  useEffect(() => checkUserSignUp(), []);
+  useEffect(() => checkUserSignIn(), []);
 
-  const checkUserSignUp = () => {
-    const getInfo = localStorage.getItem("tele-signup");
-    const response: SignUpInformation = JSON.parse(getInfo || "{}");
-    setUser(response);
+  const checkUserSignIn = () => {
+    const getInfo = JSON.parse(localStorage.getItem("user") || "null");
+    // const response: SignUpInformation = JSON.parse(getInfo || "null");
+    setUser(getInfo);
   };
 
   return (

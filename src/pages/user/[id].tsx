@@ -1,15 +1,16 @@
 import { useStore } from "@/lib/store";
+import { useEffect } from "react";
 
 interface Profile {
   name: string;
   age: number;
-  gender: "M" | "F";
-  symptom: string;
+  gender: string;
   appointment: Appointment[];
 }
 
 interface Appointment {
   doctor: string;
+  symptom: string;
   date: string;
   time: string;
 }
@@ -23,24 +24,26 @@ const useUserStore = () => {
 
 const UserProfile = () => {
   const { user, setUser } = useUserStore();
-  const UserProfile: Profile = {
-    name: "Maeve Freddrick",
-    age: 34,
-    gender: "F",
-    symptom: "Savere diarrhea",
-    appointment: [
-      {
-        doctor: "Ross S. Geller",
-        date: "2023-04-20",
-        time: "15:30 - 16:00 pm",
-      },
-      {
-        doctor: "Ross S. Geller",
-        date: "2023-04-30",
-        time: "15:30 - 16:00 pm",
-      },
-    ],
+  useEffect(() => checkUserSignIn(), []);
+  const checkUserSignIn = () => {
+    const getInfo = JSON.parse(localStorage.getItem("user") || "null");
+    // const response: SignUpInformation = JSON.parse(getInfo || "null");
+    setUser(getInfo);
   };
+  let UserProfile: Profile = {
+    name: "",
+    age: 0,
+    gender: "",
+    appointment: [],
+  };
+  if (user) {
+    UserProfile = {
+      name: user.fullname,
+      age: 34,
+      gender: user.gender,
+      appointment: user.appointment,
+    };
+  }
 
   return (
     <div className="pt-20 flex justify-center">
@@ -60,9 +63,6 @@ const UserProfile = () => {
                 </span>
               </p>
             </div>
-            <p className="font-semibold">
-              Symptom <span className="font-normal">{UserProfile.symptom}</span>
-            </p>
           </div>
           <p className="font-semibold">Appointment(s)</p>
           <div>
@@ -73,6 +73,7 @@ const UserProfile = () => {
               >
                 <div className="p-4 font-medium">
                   <p>Dr. {item.doctor}</p>
+                  <p className="font-semibold">{item.symptom}</p>
                   <p>Time {item.time}</p>
                   <p>On {item.date}</p>
                   <button className="mt-4 py-1 px-6 rounded-md bg-emerald-500/30 text-emerald-700">

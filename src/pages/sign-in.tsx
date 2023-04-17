@@ -29,18 +29,23 @@ const SignIn = (props: Props) => {
     email: "",
     password: "",
   });
-
+  const [check, setCheck] = useState(false);
   const checkUserSignUp = () => {
-    const getInfo = localStorage.getItem("tele-signup");
-    const response: SignUpInformation = JSON.parse(getInfo || "{}");
-
-    if (
-      userSignIn.email === response.email &&
-      userSignIn.password === response.password
-    ) {
-      setUser(response);
-      toast.success("Successfully Login");
-      router.push(`/user/${response.uuid}`);
+    const getInfo = JSON.parse(localStorage.getItem("tele-signup") || "[]");
+    for (let i = 0; i < getInfo.length; i++) {
+      if (
+        userSignIn.email === getInfo[i].email &&
+        userSignIn.password === getInfo[i].password
+      ) {
+        toast.success("Successfully Login");
+        localStorage.setItem("user", JSON.stringify(getInfo[i]));
+        setUser(getInfo[i]);
+        router.push(`/user/${getInfo[i].uuid}`);
+        setCheck(true);
+      }
+    }
+    if (check) {
+      null;
     } else {
       toast.error("Wrong email or password");
     }

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useStore } from "@/lib/store";
+import { useEffect } from "react";
 
 const useUserStore = () => {
   return useStore((store) => ({
@@ -9,6 +10,9 @@ const useUserStore = () => {
 
 export default function Home() {
   const { user } = useUserStore();
+  useEffect(() => {
+    console.log(user);
+  }, []);
   return (
     <main className="flex min-h-[80vh] justify-center items-center">
       <div className="flex gap-6 justify-center flex-col items-center">

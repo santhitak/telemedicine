@@ -10,6 +10,7 @@ export interface SignUpInformation {
   password: string;
   age: number;
   gender: string;
+  appointment: [];
 }
 
 const SignUp = () => {
@@ -22,8 +23,8 @@ const SignUp = () => {
       password: "",
       age: 0,
       gender: "",
+      appointment: [],
     });
-
   const handleSignup = async () => {
     if (
       userSignUpInformation.email &&
@@ -35,10 +36,20 @@ const SignUp = () => {
           userSignUpInformation.uuid = await response.text();
         })
         .then(() => {
-          localStorage.setItem(
-            "tele-signup",
-            JSON.stringify(userSignUpInformation)
-          );
+          if (localStorage.getItem("tele-signup")) {
+            const tele = JSON.parse(
+              localStorage.getItem("tele-signup") || "[]"
+            );
+            tele.push(userSignUpInformation);
+            localStorage.setItem("tele-signup", JSON.stringify(tele));
+          } else {
+            const user = [userSignUpInformation];
+            localStorage.setItem("tele-signup", JSON.stringify(user));
+          }
+          // localStorage.setItem(
+          //   "tele-signup",
+          //   JSON.stringify(userSignUpInformation)
+          // );
           toast.success("Redirecting");
         })
         .then(() => router.push("/sign-in"));
