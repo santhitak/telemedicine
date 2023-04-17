@@ -40,13 +40,14 @@ interface AppointmentInfo {
 const Appointment = () => {
   const [selected, setSelected] = useState<RadioChoice>(appointmentChoice[0]);
   const [appointmentInfo, setAppointmentInfo] = useState<AppointmentInfo>({
-    purpose: selected?.title,
+    purpose: "",
     date: "",
     time: "",
     symptom: "",
   });
 
   const handleSubmit = () => {
+    appointmentInfo.purpose = selected.title;
     console.log(appointmentInfo);
   };
 
