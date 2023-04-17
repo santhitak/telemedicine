@@ -1,3 +1,4 @@
+import { useStore } from "@/lib/store";
 import { SignUpInformation } from "../sign-up";
 
 interface Profile {
@@ -14,12 +15,15 @@ interface Appointment {
   time: string;
 }
 
-interface Props {
-  user: SignUpInformation;
-}
+const useUserStore = () => {
+  return useStore((store) => ({
+    user: store.user,
+    setUser: store.setUser,
+  }));
+};
 
-const UserProfile = (props: Props) => {
-  const { user } = props;
+const UserProfile = () => {
+  const { user, setUser } = useUserStore();
   const UserProfile: Profile = {
     name: "Maeve Freddrick",
     age: 34,
@@ -45,15 +49,15 @@ const UserProfile = (props: Props) => {
         <div className="p-10 flex gap-4 flex-col">
           <p className="font-semibold">Patient&apos;s Information</p>
           <div>
-            <p className="font-semibold">{user.fullname}</p>
+            <p className="font-semibold">{user?.fullname}</p>
             <div className="flex gap-2 font-semibold">
               <p>
-                Age <span className="font-normal">{UserProfile.age}</span>
+                Age <span className="font-normal">{user?.age}</span>
               </p>
               <p>
                 Gender{" "}
                 <span className="font-normal">
-                  {UserProfile.gender === "F" ? "Female" : "Male"}
+                  {user?.gender === "F" ? "Female" : "Male"}
                 </span>
               </p>
             </div>

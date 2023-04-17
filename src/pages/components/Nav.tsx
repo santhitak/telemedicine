@@ -1,28 +1,26 @@
 interface Props {
   slot: React.ReactElement;
-  user: SignUpInformation;
-  setUser: (user: SignUpInformation) => void;
 }
 
 import Link from "next/link";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
-import { SignUpInformation } from "../sign-up";
 import { useRouter } from "next/router";
+import { useStore } from "@/lib/store";
+
+const useUserStore = () => {
+  return useStore((store) => ({
+    user: store.user,
+    setUser: store.setUser,
+  }));
+};
 
 const Nav = (props: Props) => {
   const router = useRouter();
-  const { slot, user, setUser } = props;
+  const { slot } = props;
+  const { user, setUser } = useUserStore();
 
   const handleSignout = () => {
-    setUser({
-      fullname: "",
-      email: "",
-      age: 0,
-      gender: "",
-      password: "",
-      uuid: "",
-    });
-
+    setUser(null);
     router.push("/");
   };
 
@@ -33,19 +31,19 @@ const Nav = (props: Props) => {
           <Link href="/">
             <p className="font-medium text-lg">Telemedicine</p>
           </Link>
-          {user.email === "" && (
+          {user?.email === "" && (
             <Link href="/sign-in" className="flex gap-2 items-center">
               <p className="font-medium text-lg">Sign in</p>
               <IoArrowForwardCircleOutline className="w-6 h-6" />
             </Link>
           )}
-          {user.email !== "" && (
+          {user?.email !== "" && (
             <div className="flex gap-4">
               <Link
-                href={`/user/${user.uuid}`}
+                href={`/user/${user?.uuid}`}
                 className="flex gap-2 items-center"
               >
-                <p className="font-medium text-lg">{user.fullname}</p>
+                <p className="font-medium text-lg">{user?.fullname}</p>
               </Link>
               <button
                 onClick={handleSignout}

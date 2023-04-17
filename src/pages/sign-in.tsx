@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { SignUpInformation } from "./sign-up";
+import { useStore } from "@/lib/store";
 
 interface UserSignIn {
   email: string;
@@ -14,8 +15,15 @@ interface Props {
   setUser: (user: SignUpInformation) => void;
 }
 
+const useUserStore = () => {
+  return useStore((store) => ({
+    user: store.user,
+    setUser: store.setUser,
+  }));
+};
+
 const SignIn = (props: Props) => {
-  const { user, setUser } = props;
+  const { user, setUser } = useUserStore();
   const router = useRouter();
   const [userSignIn, setUserSignIn] = useState<UserSignIn>({
     email: "",

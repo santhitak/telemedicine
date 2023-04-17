@@ -1,12 +1,14 @@
 import Link from "next/link";
-import { SignUpInformation } from "./sign-up";
+import { useStore } from "@/lib/store";
 
-interface Props {
-  user: SignUpInformation;
-}
+const useUserStore = () => {
+  return useStore((store) => ({
+    user: store.user,
+  }));
+};
 
-export default function Home(props: Props) {
-  const { user } = props;
+export default function Home() {
+  const { user } = useUserStore();
   return (
     <main className="flex min-h-[80vh] justify-center items-center">
       <div className="flex gap-6 justify-center flex-col items-center">
@@ -17,7 +19,7 @@ export default function Home(props: Props) {
             Telemedicine
           </span>
         </h4>
-        <Link href={user.email !== "" ? "/appointment" : "/sign-in"}>
+        <Link href={user ? "/appointment" : "/sign-in"}>
           <button className="font-semibold text-white bg-gray-900 rounded-lg py-3 px-6 mt-4">
             Getting Started
           </button>
