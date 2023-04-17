@@ -57,7 +57,7 @@ const Nav = (props: Props) => {
               </Link>
               <button
                 onClick={handleSignout}
-                className="py-1 px-4 rounded-md border border-gray-800 hover:bg-gray-800 transition-all ease-in-out hover:text-white"
+                className="py-1 px-4 rounded-md text-gray-500 text-sm font-medium bg-gray-200 hover:bg-gray-800 transition-all ease-in-out hover:text-white"
               >
                 Sign out
               </button>
