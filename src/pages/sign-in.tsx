@@ -9,7 +9,13 @@ interface UserSignIn {
   password: string;
 }
 
-const SignIn = () => {
+interface Props {
+  user: SignUpInformation;
+  setUser: (user: SignUpInformation) => void;
+}
+
+const SignIn = (props: Props) => {
+  const { user, setUser } = props;
   const router = useRouter();
   const [userSignIn, setUserSignIn] = useState<UserSignIn>({
     email: "",
@@ -24,6 +30,7 @@ const SignIn = () => {
       userSignIn.email === response.email &&
       userSignIn.password === response.password
     ) {
+      setUser(response);
       toast.success("Successfully Login");
       router.push(`/user/${response.uuid}`);
     } else {

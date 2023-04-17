@@ -1,6 +1,12 @@
 import Link from "next/link";
+import { SignUpInformation } from "./sign-up";
 
-export default function Home() {
+interface Props {
+  user: SignUpInformation;
+}
+
+export default function Home(props: Props) {
+  const { user } = props;
   return (
     <main className="flex min-h-[80vh] justify-center items-center">
       <div className="flex gap-6 justify-center flex-col items-center">
@@ -11,7 +17,7 @@ export default function Home() {
             Telemedicine
           </span>
         </h4>
-        <Link href="/sign-in">
+        <Link href={user.email !== "" ? "/appointment" : "/sign-in"}>
           <button className="font-semibold text-white bg-gray-900 rounded-lg py-3 px-6 mt-4">
             Getting Started
           </button>
