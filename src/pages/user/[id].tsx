@@ -1,5 +1,4 @@
 import { useStore } from "@/lib/store";
-import { SignUpInformation } from "../sign-up";
 
 interface Profile {
   name: string;

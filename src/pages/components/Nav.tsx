@@ -6,6 +6,8 @@ import Link from "next/link";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
 import { useRouter } from "next/router";
 import { useStore } from "@/lib/store";
+import { useEffect } from "react";
+import { SignUpInformation } from "../sign-up";
 
 const useUserStore = () => {
   return useStore((store) => ({
@@ -24,6 +26,14 @@ const Nav = (props: Props) => {
     router.push("/");
   };
 
+  useEffect(() => checkUserSignUp(), []);
+
+  const checkUserSignUp = () => {
+    const getInfo = localStorage.getItem("tele-signup");
+    const response: SignUpInformation = JSON.parse(getInfo || "{}");
+    setUser(response);
+  };
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-between px-28 py-20">
       <div className="w-full h-full flex flex-col">
@@ -31,13 +41,13 @@ const Nav = (props: Props) => {
           <Link href="/">
             <p className="font-medium text-lg">Telemedicine</p>
           </Link>
-          {user?.email === "" && (
+          {!user && (
             <Link href="/sign-in" className="flex gap-2 items-center">
               <p className="font-medium text-lg">Sign in</p>
               <IoArrowForwardCircleOutline className="w-6 h-6" />
             </Link>
           )}
-          {user?.email !== "" && (
+          {user && (
             <div className="flex gap-4">
               <Link
                 href={`/user/${user?.uuid}`}
