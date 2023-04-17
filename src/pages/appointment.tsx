@@ -34,6 +34,7 @@ interface AppointmentInfo {
   purpose: string;
   date: string;
   time: string;
+  doctor: string;
   symptom: string;
 }
 
@@ -43,6 +44,7 @@ const Appointment = () => {
     purpose: "",
     date: "",
     time: "",
+    doctor: "",
     symptom: "",
   });
 
@@ -52,13 +54,13 @@ const Appointment = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center pt-20">
+    <div className="flex flex-col justify-center items-center pt-10">
       <p className="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-500">
         Make an appointment
       </p>
       <div className="flex flex-col gap-10">
         <RadioGroup value={selected} onChange={setSelected}>
-          <div className="grid grid-cols-2 gap-6 pt-10">
+          <div className="grid grid-cols-2 gap-6 pt-6">
             {appointmentChoice.map((item: RadioChoice, i: number) => (
               <RadioGroup.Option
                 key={i}
@@ -126,6 +128,27 @@ const Appointment = () => {
                 onChange={(e) => (appointmentInfo.time = e.target.value)}
               />
             </div>
+          </div>
+
+          <div className="w-full">
+            <p className="font-medium text-gray-900">Choose doctor</p>
+            <select
+              name="doctor"
+              id="doctor"
+              className="relative block w-full rounded-md border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring sm:text-sm sm:leading-6 px-2 mt-2"
+              placeholder="Let us choose your doctor"
+              defaultValue="Let us choose your doctor"
+              onChange={(e) => (appointmentInfo.doctor = e.target.value)}
+            >
+              <option value="">Choose your doctor</option>
+              <option value="Zedric Diggory">Zedric Diggory</option>
+              <option value="Lupin Sonata">Lupin Sonata</option>
+              <option value="Carlitos Ragnvaldr">Carlitos Ragnvaldr</option>
+              <option value="Ivan Micheline">Ivan Micheline</option>
+              <option value="Marco Berto">Marco Berto</option>
+              <option value="Veremund Maurice">Veremund Maurice</option>
+              <option value="Kåre Alcibiades">Kåre Alcibiades</option>
+            </select>
           </div>
 
           <div className="w-full">
