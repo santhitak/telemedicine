@@ -1,4 +1,5 @@
 import { useStore } from "@/lib/store";
+import Link from "next/link";
 import { useEffect } from "react";
 
 interface Profile {
@@ -45,7 +46,12 @@ const UserProfile = () => {
   }
 
   return (
-    <div className="pt-20 flex justify-center">
+    <div className="pt-20 flex flex-col items-center justify-center">
+      <Link href="/appointment">
+        <button className="mb-6 py-2 px-14 font-semibold text-white rounded-md bg-emerald-600 ">
+          Make new appointment
+        </button>
+      </Link>
       <div className="bg-gray-100 rounded-md w-5/12 min-h-96">
         <div className="p-10 flex gap-4 flex-col">
           <p className="font-semibold">Patient&apos;s Information</p>
