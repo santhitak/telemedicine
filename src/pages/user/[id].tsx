@@ -27,17 +27,16 @@ const UserProfile = () => {
   useEffect(() => checkUserSignIn(), []);
   const checkUserSignIn = () => {
     const getInfo = JSON.parse(localStorage.getItem("user") || "null");
-    // const response: SignUpInformation = JSON.parse(getInfo || "null");
     setUser(getInfo);
   };
-  let UserProfile: Profile = {
+  let UserProfileInfo: Profile = {
     name: "",
     age: 0,
     gender: "",
     appointment: [],
   };
   if (user) {
-    UserProfile = {
+    UserProfileInfo = {
       name: user.fullname,
       age: 34,
       gender: user.gender,
@@ -66,7 +65,7 @@ const UserProfile = () => {
           </div>
           <p className="font-semibold">Appointment(s)</p>
           <div>
-            {UserProfile.appointment.map((item: Appointment, i: number) => (
+            {UserProfileInfo.appointment.map((item: Appointment, i: number) => (
               <div
                 key={i}
                 className="bg-emerald-500/20 border border-emerald-400 rounded-md flex justify-center my-2 text-center"

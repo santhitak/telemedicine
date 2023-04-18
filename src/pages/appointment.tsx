@@ -6,6 +6,10 @@ import { FiArrowRightCircle } from "react-icons/fi";
 import { RadioGroup } from "@headlessui/react";
 import { useState, Fragment, useEffect } from "react";
 import { useStore } from "@/lib/store";
+import { SignUpInformation } from "./sign-up";
+import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/router";
+
 interface RadioChoice {
   title: string;
   icon: React.ReactElement;
@@ -45,6 +49,8 @@ const useUserStore = () => {
 };
 
 const Appointment = () => {
+  const router = useRouter();
+  const [data, setData] = useState([]);
   const [con, setCon] = useState(false);
   const [selected, setSelected] = useState<RadioChoice>(appointmentChoice[0]);
   const [appointmentInfo, setAppointmentInfo] = useState<AppointmentInfo>({
@@ -54,13 +60,18 @@ const Appointment = () => {
     doctor: "",
     symptom: "",
   });
+
   const { user, setUser } = useUserStore();
   useEffect(() => checkUserSignIn(), []);
-  const data = JSON.parse(localStorage.getItem("tele-signup") || "[]");
+
   const checkUserSignIn = () => {
-    const getInfo = JSON.parse(localStorage.getItem("user") || "null");
-    // const response: SignUpInformation = JSON.parse(getInfo || "null");
-    setUser(getInfo);
+    const dataTele = localStorage.getItem("tele-signup") || "[]";
+    const dataTeleResponse = JSON.parse(dataTele);
+    setData(dataTeleResponse);
+
+    const getInfo = localStorage.getItem("user") || "{}";
+    const response: SignUpInformation = JSON.parse(getInfo);
+    setUser(response);
   };
 
   const handleSubmit = () => {
@@ -73,13 +84,13 @@ const Appointment = () => {
         user?.appointment.push(appointmentInfo);
         localStorage.setItem("user", JSON.stringify(user));
       }
+      toast.success("Successfully made an appointment");
+      router.push(`/user/${data[i].uuid}`);
     }
-
-    console.log(con);
-    console.log(appointmentInfo);
   };
   return (
     <div className="flex flex-col justify-center items-center pt-10">
+      <Toaster position="top-center" reverseOrder={false} />
       <p className="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-500">
         Make an appointment
       </p>
