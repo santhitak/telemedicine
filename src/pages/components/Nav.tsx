@@ -15,7 +15,7 @@ const useUserStore = () => {
   }));
 };
 
-export default function Nav(props: Props) {
+const Nav = (props: Props) => {
   const router = useRouter();
   const { slot } = props;
   const { user, setUser } = useUserStore();
@@ -67,4 +67,6 @@ export default function Nav(props: Props) {
       </div>
     </div>
   );
-}
+};
+
+export default Nav;
