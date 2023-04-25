@@ -25,17 +25,19 @@ const useUserStore = () => {
 
 const UserProfile = () => {
   const { user, setUser } = useUserStore();
-  useEffect(() => checkUserSignIn(), []);
+  useEffect(() => checkUserSignIn());
   const checkUserSignIn = () => {
     const getInfo = JSON.parse(localStorage.getItem("user") || "null");
     setUser(getInfo);
   };
+
   let UserProfileInfo: Profile = {
     name: "",
     age: 0,
     gender: "",
     appointment: [],
   };
+
   if (user) {
     UserProfileInfo = {
       name: user.fullname,

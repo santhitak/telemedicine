@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { AppointmentInfo } from "./appointment";
 
 export interface SignUpInformation {
   uuid: string;
@@ -10,7 +11,7 @@ export interface SignUpInformation {
   password: string;
   age: number;
   gender: string;
-  appointment: [];
+  appointment: AppointmentInfo[];
 }
 
 const SignUp = () => {

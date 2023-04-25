@@ -34,7 +34,7 @@ const appointmentChoice: RadioChoice[] = [
   },
 ];
 
-interface AppointmentInfo {
+export interface AppointmentInfo {
   purpose: string;
   date: string;
   time: string;
@@ -50,7 +50,7 @@ const useUserStore = () => {
 
 const Appointment = () => {
   const router = useRouter();
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<any[]>([]);
   const [con, setCon] = useState(false);
   const [selected, setSelected] = useState<RadioChoice>(appointmentChoice[0]);
   const [appointmentInfo, setAppointmentInfo] = useState<AppointmentInfo>({
@@ -62,7 +62,7 @@ const Appointment = () => {
   });
 
   const { user, setUser } = useUserStore();
-  useEffect(() => checkUserSignIn(), []);
+  useEffect(() => checkUserSignIn());
 
   const checkUserSignIn = () => {
     const dataTele = localStorage.getItem("tele-signup") || "[]";
@@ -81,13 +81,16 @@ const Appointment = () => {
       if (data[i].email === user?.email) {
         data[i].appointment.push(appointmentInfo);
         localStorage.setItem("tele-signup", JSON.stringify(data));
-        user?.appointment.push(appointmentInfo);
+        if (user) {
+          user.appointment.push(appointmentInfo);
+        }
         localStorage.setItem("user", JSON.stringify(user));
       }
       toast.success("Successfully made an appointment");
       router.push(`/user/${data[i].uuid}`);
     }
   };
+
   return (
     <div className="flex flex-col justify-center items-center pt-10">
       <Toaster position="top-center" reverseOrder={false} />

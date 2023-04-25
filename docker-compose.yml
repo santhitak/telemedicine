@@ -2,6 +2,9 @@ version: "1"
 services:
   frontend:
     build:
-      context: .
+      context: ./
       dockerfile: Dockerfile
-    image: santhitak/telemedicine-frontend
+    image: santhitak/telemedicine:v1
+    volumes:
+      - ./:/app:rw
+      - /app/node_modules

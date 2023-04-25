@@ -7,7 +7,6 @@ import { IoArrowForwardCircleOutline } from "react-icons/io5";
 import { useRouter } from "next/router";
 import { useStore } from "@/lib/store";
 import { useEffect } from "react";
-import { SignUpInformation } from "../sign-up";
 
 const useUserStore = () => {
   return useStore((store) => ({
@@ -27,11 +26,10 @@ const Nav = (props: Props) => {
     router.push("/");
   };
 
-  useEffect(() => checkUserSignIn(), []);
+  useEffect(() => checkUserSignIn());
 
   const checkUserSignIn = () => {
     const getInfo = JSON.parse(localStorage.getItem("user") || "null");
-    // const response: SignUpInformation = JSON.parse(getInfo || "null");
     setUser(getInfo);
   };
 

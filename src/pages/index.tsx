@@ -10,9 +10,7 @@ const useUserStore = () => {
 
 export default function Home() {
   const { user } = useUserStore();
-  useEffect(() => {
-    console.log(user);
-  }, []);
+
   return (
     <main className="flex min-h-[80vh] justify-center items-center">
       <div className="flex gap-6 justify-center flex-col items-center">
